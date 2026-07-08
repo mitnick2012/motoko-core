@@ -443,12 +443,16 @@ module {
   /// ```
   public let fromInt64 : (x : Int64) -> Float = Prim.int64ToFloat;
 
-  /// Conversion to Int.
+  /// Conversion to `Int` by truncating the decimal places of the float,
+  /// equivalent to `Float.toInt(Float.trunc(self))`.
+  /// Truncation rounds toward zero: the fractional part is dropped regardless of sign.
   ///
   /// Traps for `inf`, `-inf`, and `NaN`.
   ///
   /// Example:
   /// ```motoko include=import
+  /// assert Float.toInt(1.9) == +1;    // truncates, does not round up
+  /// assert Float.toInt(-1.9) == -1;   // truncates toward zero, not toward -inf
   /// assert Float.toInt(1.2e6) == +1_200_000;
   /// ```
   public let toInt : (self : Float) -> Int = Prim.floatToInt;
@@ -458,12 +462,7 @@ module {
   /// Note: The floating point number may be imprecise for large or small Int values.
   /// Returns `inf` if the integer is greater than the maximum floating point number.
   /// Returns `-inf` if the integer is less than the minimum floating point number.
-  ///
-  /// Example:
-  /// ```motoko include=import
-  /// assert Float.fromInt(-123) == -123.0;
-  /// ```
-  /// @deprecated M0235
+  /// @deprecated Use `Int.toFloat` instead.
   public let fromInt : (x : Int) -> Float = Prim.intToFloat;
 
   /// Conversion to Float32 (32-bit single precision).
@@ -479,11 +478,7 @@ module {
   /// Conversion from Float32 (32-bit single precision) to Float (64-bit double precision).
   ///
   /// This is a lossless widening conversion.
-  ///
-  /// Example:
-  /// ```motoko include=import
-  /// assert Float.fromFloat32(1.5) == 1.5;
-  /// ```
+  /// @deprecated Use `Float32.toFloat` instead.
   public let fromFloat32 : (x : Prim.Types.Float32) -> Float = Prim.float32ToFloat;
 
   /// Determines whether `x` is equal to `y` within the defined tolerance of `epsilon`.
